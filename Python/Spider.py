@@ -15,8 +15,8 @@ def main():
     baseurl = "https://movie.douban.com/top250?Start="
     # 1.爬取网页
     datalist = getData(baseurl)
-    # savepath = ".\\movie.xls"
-    # saveData(savepath)
+    savepath = "豆瓣电影top250.xls"
+    saveData(datalist,savepath)
 
 
 # 影片详情链接的规则
@@ -37,19 +37,18 @@ findBd = re.compile(r'<p class="">(.*?)</p>', re.S)
 
 def getData(baseurl):
     datalist = []
-    for i in range(0, 1):
+    for i in range(0, 10):
         url = baseurl + str(i * 25)
         html = askURL(url)
         # 逐一解析数据
         soup = BeautifulSoup(html, "html.parser")
         for item in soup.find_all("div", class_="item"):
-            # print(item)
             data = []  # 保存一部电影的所有信息
             item = str(item)
             link = re.findall(findLink, item)[0]
             data.append(link)
 
-            imgSrc = re.findall(findImgSrc, item)
+            imgSrc = re.findall(findImgSrc, item)[0]
             data.append(imgSrc)
 
             titles = re.findall(findTitle, item)
@@ -108,8 +107,20 @@ def askURL(url):
 
 
 # 3.保存数据
-def saveData(savepath):
-    print(1)
+def saveData(datalist,savepath):
+    print("saving.....")
+    book = xlwt.Workbook(encoding="utf-8", style_compression = 0)
+    sheet = book.add_sheet("豆瓣电影Top250", cell_overwrite_ok = True)
+    col = ("电影详情链接", "图片链接", "影片中文名", "影片外国名", "评分", "评分数", "概况", "相关信息")
+    for i in range(0,8):
+        sheet.write(0,i,col[i])
+    for i in range(0,250):
+        print("第%d条" %(i+1))
+        data = datalist[i]
+        for j in range(0,8):
+            sheet.write(i+1,j,data[j])
+
+    book.save(savepath)
 
 
 if __name__ == "__main__":
