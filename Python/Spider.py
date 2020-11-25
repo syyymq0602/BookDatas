@@ -16,7 +16,7 @@ def main():
     # 1.爬取网页
     datalist = getData(baseurl)
     savepath = "豆瓣电影top250.xls"
-    saveData(datalist,savepath)
+    saveData(datalist, savepath)
 
 
 # 影片详情链接的规则
@@ -56,7 +56,7 @@ def getData(baseurl):
                 ctitle = titles[0]  # 添加中文名
                 data.append(ctitle)
                 etitle = titles[1].replace("/", "")
-                data.append(etitle)
+                data.append(etitle.strip())
             else:
                 data.append(titles[0])
                 data.append(' ')
@@ -81,7 +81,7 @@ def getData(baseurl):
 
             datalist.append(data)
 
-    print(datalist)
+    # print(datalist)
     # 2.解析数据
     return datalist
 
@@ -107,18 +107,18 @@ def askURL(url):
 
 
 # 3.保存数据
-def saveData(datalist,savepath):
+def saveData(datalist, savepath):
     print("saving.....")
-    book = xlwt.Workbook(encoding="utf-8", style_compression = 0)
-    sheet = book.add_sheet("豆瓣电影Top250", cell_overwrite_ok = True)
+    book = xlwt.Workbook(encoding="utf-8", style_compression=0)
+    sheet = book.add_sheet("豆瓣电影Top250", cell_overwrite_ok=True)
     col = ("电影详情链接", "图片链接", "影片中文名", "影片外国名", "评分", "评分数", "概况", "相关信息")
-    for i in range(0,8):
-        sheet.write(0,i,col[i])
-    for i in range(0,250):
-        print("第%d条" %(i+1))
+    for i in range(0, 8):
+        sheet.write(0, i, col[i])
+    for i in range(0, 250):
+        print("第%d条" % (i + 1))
         data = datalist[i]
-        for j in range(0,8):
-            sheet.write(i+1,j,data[j])
+        for j in range(0, 8):
+            sheet.write(i + 1, j, data[j])
 
     book.save(savepath)
 
