@@ -1,7 +1,7 @@
 import socket
 import time
 import json
-from Data import Data
+from Python.Data import Data
 # 绑定信息 这里绑定的数据是一个元组
 # 声明协议类型为TCP协议，同时生成socket链接对象
 udp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

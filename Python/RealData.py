@@ -3,7 +3,7 @@ import threading
 import time
 import socket
 import json
-from Data import Data
+from Python.Data import Data
 
 tx = 5  # 故障初始阶段时间
 ty = 15  # 故障阶段时间
